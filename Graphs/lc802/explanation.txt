@@ -1,0 +1,12 @@
+Intuition
+Straight to point, if we find a cycle, we propogate a signal "unsafe" up towards the top where we came from, if we need to jump into a new branch mid-way (we doing DFS), we set unsafe to false (temporarily), as this branch might be safe, but when we come back to our unsafe path propagating up, we use our "safe" vector to check if the path we were on before branching out is safe or not, if not we set unsafe back to true and propagate the signal back up turning all the nodes on this path unsafe.
+
+Approach
+Very important - to understand this problem you must know dfs topo sort algorithm I create a helper (not very good with names) function, which operates very similar to a dfs topo sort function, we maintain a vector called inStack which keeps track of nodes currently in the stack, if ever a node is found visited and in the current stack (simulated by the recursion) we found ourselves a cycle! now, we change the variable "unsafe" to true, and safe[neigh] false as well, "unsafe" will propagate upwards as true and keep marking the nodes unsafe as it goes up, while going up (the calls end, previous calls resume, which are nodes we came from so its like going back upwards/downwards), but the new branch may not contain a cycle, so we set unsafe to false before journeying into the new branch but then how do we set it back when we come back to the branching point? we use the "safe" vector there, if while going up there is a node which has safe[node] = false, we found our branching point where we left off for a new branch, and now we set unsafe to true again.
+
+Complexity
+Time complexity:
+O(V + E)
+
+Space complexity:
+O(V)
